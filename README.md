@@ -5,7 +5,7 @@ Build executable
 make / make build
 ```
 
-Clean .build
+Clean ./build
 ```
 make clean
 ```

@@ -8,7 +8,7 @@
 int main() {
   /*
    *
-   * Init systems
+   * Init systems and maze_controller
    *
    *
   */
@@ -55,8 +55,7 @@ int main() {
     maze.render();
 
     SDL_RenderPresent(renderer);
-    // SDL_Delay(16);
-    SDL_Delay(100);
+    // SDL_Delay(50);
   }
 
   /*

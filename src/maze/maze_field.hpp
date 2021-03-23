@@ -5,6 +5,7 @@ enum cell_type {
   wall
 };
 
+// structure that stores the entire maze field
 struct maze_field {
   size_t x_size;
   size_t y_size;

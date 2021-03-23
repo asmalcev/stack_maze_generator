@@ -52,6 +52,7 @@ void maze_controller::update() {
   create_path(current_index, index_to_visit);
 }
 
+// generates unvisited neighbors array
 std::array<size_t, 5> maze_controller::get_neighbors_array(size_t index) {
   std::array<size_t, 5> neighbors = {0};
   size_t current_index = 0;
@@ -88,6 +89,10 @@ std::array<size_t, 5> maze_controller::get_neighbors_array(size_t index) {
   return neighbors;
 }
 
+/*
+ * check if point has been visited
+ * if point has path to any other point -> it has been visited
+ */
 bool maze_controller::is_visited(size_t index) {
   long index_to_check = index - _maze->x_size;
   if (index_to_check > 0 && _maze->field[index_to_check] == cell_type::empty) {
@@ -116,6 +121,7 @@ size_t maze_controller::random_index_from_0_to(size_t divider) {
   return rand() % divider;
 }
 
+// connect two cells
 void maze_controller::create_path(size_t index_from, size_t index_to) {
   _maze->field[index_from + (index_to - index_from) / 2] = cell_type::empty;
 }

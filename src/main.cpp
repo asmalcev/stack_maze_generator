@@ -3,7 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "include.hpp"
-#include "maze_field/maze_field.hpp"
+#include "maze/maze_controller.hpp"
 
 int main() {
   /*
@@ -27,7 +27,7 @@ int main() {
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
   SDL_SetWindowTitle(window, "Generator");
 
-  maze_field maze;
+  maze_controller maze(renderer);
 
   /*
    *
@@ -39,7 +39,6 @@ int main() {
   bool running = true;
 
   while (running) {
-    SDL_SetRenderDrawColor(renderer, 33, 33, 33, 255);
     SDL_RenderClear(renderer);
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
@@ -52,10 +51,12 @@ int main() {
       }
     }
 
-    maze.render(renderer);
+    maze.update();
+    maze.render();
 
     SDL_RenderPresent(renderer);
-    SDL_Delay(16);
+    // SDL_Delay(16);
+    SDL_Delay(100);
   }
 
   /*

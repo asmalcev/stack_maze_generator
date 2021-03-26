@@ -2,7 +2,8 @@
 
 enum cell_type {
   empty,
-  wall
+  wall,
+  visited
 };
 
 // structure that stores the entire maze field

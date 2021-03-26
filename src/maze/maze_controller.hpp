@@ -22,5 +22,5 @@ public:
   ~maze_controller();
 
   void render();
-  void update();
+  bool update();
 };

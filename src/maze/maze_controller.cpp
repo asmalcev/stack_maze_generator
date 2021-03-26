@@ -30,9 +30,9 @@ void maze_controller::render() {
 }
 
 // update state of field
-void maze_controller::update() {
+bool maze_controller::update() {
   if (visited_indexes.empty()) {
-    return;
+    return false;
   }
   size_t current_index = visited_indexes.top();
 
@@ -40,7 +40,7 @@ void maze_controller::update() {
   while (neighbors[4] == 0) {
     visited_indexes.pop();
     if (visited_indexes.empty()) {
-      return;
+      return false;
     }
     current_index = visited_indexes.top();
     neighbors = get_neighbors_array(current_index);
@@ -50,71 +50,41 @@ void maze_controller::update() {
   visited_indexes.push(index_to_visit);
 
   create_path(current_index, index_to_visit);
+  return true;
 }
 
 // generates unvisited neighbors array
 std::array<size_t, 5> maze_controller::get_neighbors_array(size_t index) {
   std::array<size_t, 5> neighbors = {0};
   size_t current_index = 0;
+  size_t max_index = _maze->x_size * _maze->x_size;
   long index_to_check = index - 2 * _maze->x_size;
 
-  if (index_to_check >= 0 &&
-      _maze->field[index_to_check] == cell_type::empty &&
-      !is_visited(index_to_check)) {
+  if (index_to_check >= 0 && index_to_check < max_index &&
+      _maze->field[index_to_check] == cell_type::empty) {
     neighbors[current_index++] = index_to_check;
   }
 
   index_to_check = index + 2;
-  if (index_to_check >= 0 &&
-      _maze->field[index_to_check] == cell_type::empty &&
-      !is_visited(index_to_check)) {
+  if (index_to_check >= 0 && index_to_check < max_index &&
+      _maze->field[index_to_check] == cell_type::empty) {
     neighbors[current_index++] = index_to_check;
   }
 
   index_to_check = index + 2 * _maze->x_size;
-  if (index_to_check >= 0 &&
-      _maze->field[index_to_check] == cell_type::empty &&
-      !is_visited(index_to_check)) {
+  if (index_to_check >= 0 && index_to_check < max_index &&
+      _maze->field[index_to_check] == cell_type::empty) {
     neighbors[current_index++] = index_to_check;
   }
 
   index_to_check = index - 2;
-  if (index_to_check >= 0 &&
-      _maze->field[index_to_check] == cell_type::empty &&
-      !is_visited(index_to_check)) {
+  if (index_to_check >= 0 && index_to_check < max_index &&
+      _maze->field[index_to_check] == cell_type::empty) {
     neighbors[current_index++] = index_to_check;
   }
 
   neighbors[4] = current_index;
   return neighbors;
-}
-
-/*
- * check if point has been visited
- * if point has path to any other point -> it has been visited
- */
-bool maze_controller::is_visited(size_t index) {
-  long index_to_check = index - _maze->x_size;
-  if (index_to_check > 0 && _maze->field[index_to_check] == cell_type::empty) {
-    return true;
-  }
-
-  index_to_check = index + 1;
-  if (index_to_check > 0 && _maze->field[index_to_check] == cell_type::empty) {
-    return true;
-  }
-
-  index_to_check = index + _maze->x_size;
-  if (index_to_check > 0 && _maze->field[index_to_check] == cell_type::empty) {
-    return true;
-  }
-
-  index_to_check = index - 1;
-  if (index_to_check > 0 && _maze->field[index_to_check] == cell_type::empty) {
-    return true;
-  }
-
-  return false;
 }
 
 size_t maze_controller::random_index_from_0_to(size_t divider) {
@@ -123,5 +93,7 @@ size_t maze_controller::random_index_from_0_to(size_t divider) {
 
 // connect two cells
 void maze_controller::create_path(size_t index_from, size_t index_to) {
-  _maze->field[index_from + (index_to - index_from) / 2] = cell_type::empty;
+  _maze->field[index_from] = cell_type::visited;
+  _maze->field[index_to] = cell_type::visited;
+  _maze->field[index_from + (index_to - index_from) / 2] = cell_type::visited;
 }

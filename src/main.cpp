@@ -55,7 +55,6 @@ int main() {
     maze.render();
 
     SDL_RenderPresent(renderer);
-    // SDL_Delay(50);
   }
 
   /*
